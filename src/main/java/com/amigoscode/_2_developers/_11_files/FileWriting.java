@@ -27,7 +27,8 @@ public class FileWriting {
     public static void writeString(String filePath, String content) throws IOException {
         // TODO: 1 - Use Files.writeString(Path.of(filePath), content) to write the content.
         //  This creates the file if it doesn't exist, or overwrites it if it does.
-
+        System.out.println(filePath);
+        Files.writeString(Path.of(filePath),content);
     }
 
     /**
@@ -116,7 +117,7 @@ public class FileWriting {
         System.out.println("=== Write String ===");
         writeString(baseDir + "/write-test.txt", "Hello, File!");
         System.out.println("Written. Content: " + Files.readString(Path.of(baseDir + "/write-test.txt")));
-
+        /*
         System.out.println("\n=== Append to File ===");
         appendToFile(baseDir + "/write-test.txt", "This was appended!");
         System.out.println("Appended. Content:\n" + Files.readString(Path.of(baseDir + "/write-test.txt")));
@@ -145,7 +146,7 @@ public class FileWriting {
         writeCsv(baseDir + "/data.csv", headers, rows);
         System.out.println("CSV written:");
         System.out.println(Files.readString(Path.of(baseDir + "/data.csv")));
-
+        */
         // Clean up
         Files.walk(Path.of(baseDir))
                 .sorted(java.util.Comparator.reverseOrder())

@@ -20,7 +20,8 @@ public class UserInputExercises {
     public static String readString(Scanner scanner) {
         // TODO: 1 - Prompt the user with "Enter your name: " (use System.out.print).
         //  Read a full line using scanner.nextLine() and return it.
-        return null;
+        System.out.println("Enter your name: ");
+        return scanner.nextLine();
     }
 
     /**
@@ -38,7 +39,14 @@ public class UserInputExercises {
         //    catch InputMismatchException, print "Invalid input!", and return -1.
         //  Don't forget to consume the leftover newline with scanner.nextLine()
         //  after reading the int (both in success and failure cases).
-        return 0;
+        System.out.println("Enter a number: ");
+        try{
+            int num = scanner.nextInt();
+            return num;
+        } catch(InputMismatchException e) {
+            System.out.println("Invalid input!");
+            return -1;
+        }
     }
 
     /**
@@ -53,6 +61,12 @@ public class UserInputExercises {
         //  Read a line with scanner.nextLine().
         //  If the line equals "quit" (case-insensitive), break out of the loop.
         //  Otherwise, print "You entered: " followed by the input.
+        String input = "";
+        while(!"quit".equals(input)){
+            System.out.println("Enter text (or 'quit' to stop): ");
+            input = scanner.nextLine();
+        }
+
 
     }
 
@@ -64,6 +78,8 @@ public class UserInputExercises {
      */
     public static boolean isValidAge(int age) {
         // TODO: 4 - Return true if age is between 0 and 150 (inclusive), false otherwise.
+        if(age >= 0 && age <= 150)
+            return true;
         return false;
     }
 
@@ -75,6 +91,8 @@ public class UserInputExercises {
      */
     public static boolean isValidEmail(String email) {
         // TODO: 5 - Return true if email is not null and contains "@", false otherwise.
+        if(email.contains("@"))
+            return true;
         return false;
     }
 
@@ -92,6 +110,27 @@ public class UserInputExercises {
         //  3. Ask for email. Keep asking until isValidEmail() returns true.
         //  4. Print a summary: "Registration complete!"
         //     "Name: ...", "Age: ...", "Email: ..."
+        String name;
+        String email;
+        int age;
+
+        do{
+            System.out.println("Name ?");
+            name = scanner.nextLine();
+        }while(name.isBlank() || name.isEmpty());
+
+        do{
+            System.out.println("Age ?");
+            age = scanner.nextInt();
+        }while(!isValidAge(age));
+
+        do {
+            System.out.println("Email ?");
+            email = scanner.nextLine();
+        }while(!isValidEmail(email));
+
+        scanner.close();
+        System.out.println("Name:"+name+", Age:"+age+", Email:"+email);
 
     }
 
