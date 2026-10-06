@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class FileWriting {
     public static void writeString(String filePath, String content) throws IOException {
         // TODO: 1 - Use Files.writeString(Path.of(filePath), content) to write the content.
         //  This creates the file if it doesn't exist, or overwrites it if it does.
-        System.out.println(filePath);
+        //System.out.println(Path.of(filePath).toAbsolutePath());
         Files.writeString(Path.of(filePath),content);
     }
 
@@ -42,6 +43,7 @@ public class FileWriting {
         // TODO: 2 - Use Files.writeString with StandardOpenOption.APPEND to append text.
         //  Add a newline ("\n") before the text so it appears on a new line.
         //  Example: Files.writeString(Path.of(filePath), "\n" + text, StandardOpenOption.APPEND);
+        Files.writeString(Path.of(filePath),"\n"+text,StandardOpenOption.APPEND );
 
     }
 
@@ -55,7 +57,11 @@ public class FileWriting {
     public static void writeLines(String filePath, List<String> lines) throws IOException {
         // TODO: 3 - Use Files.write(Path.of(filePath), lines) to write all lines.
         //  Each string in the list becomes one line in the file.
-
+        if(Files.notExists(Path.of(filePath)))
+            Files.createFile(Path.of(filePath));
+        for (String line : lines) {
+            Files.writeString(Path.of(filePath),line+"\n",StandardOpenOption.APPEND );
+        }
     }
 
     /**
@@ -74,6 +80,18 @@ public class FileWriting {
         //      writer.newLine();
         //      writer.write("Line 3");
         //  }
+        if(Files.notExists(Path.of(filePath)))
+            Files.createFile(Path.of(filePath));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
+            writer.write("Black Lotus");
+            writer.newLine();
+            writer.write("Time Walk");
+            writer.newLine();
+            writer.write("Ancestral Calling");
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -90,6 +108,7 @@ public class FileWriting {
         //  or Files.copy(Path.of(sourcePath), Path.of(destinationPath)) for a direct copy.
         //  Note: Files.copy will throw if destination already exists unless you add
         //  StandardCopyOption.REPLACE_EXISTING.
+        Files.copy(Path.of(sourcePath), Path.of(destinationPath), StandardCopyOption.REPLACE_EXISTING);
 
     }
 
@@ -102,12 +121,37 @@ public class FileWriting {
      * @throws IOException if writing fails
      */
     public static void writeCsv(String filePath, String[] headers, String[][] rows) throws IOException {
-        // TODO: 6 - Write a CSV file:
-        //  First, write the headers joined by commas, followed by a newline.
-        //  Then, for each row, write the values joined by commas, followed by a newline.
-        //  Use StringBuilder or String.join(",", array) to build each line.
-        //  Write the complete result using Files.writeString().
+        /*
+         TODO: 6 - Write a CSV file:
+        First, write the headers joined by commas, followed by a newline.
+        Then, for each row, write the values joined by commas, followed by a newline.
+        Use StringBuilder or String.join(",", array) to build each line.
+        Write the complete result using Files.writeString().
+        String[] headers = {"Name", "Age", "City"};
+        String[][] rows = {
+                {"Alice", "30", "London"},
+                {"Bob", "25", "Paris"},
+                {"Charlie", "35", "Tokyo"}
+         */
+        StringBuilder builder = new StringBuilder();
+        Path pathOf = Path.of(filePath);
 
+        for(String header : headers){
+            builder.append(header + ",");
+        }
+
+        Files.writeString(pathOf
+                ,builder.deleteCharAt(builder.length()-1).toString()+"\n");
+
+        builder.setLength(0);
+        for(int i = 0; i < rows.length ; i++){
+            for(int j = 0; j < rows[0].length; j++){
+                builder.append(rows[i][j] + ",");
+            }
+            Files.writeString(pathOf
+                    ,builder.deleteCharAt(builder.length()-1).toString()+"\n", StandardOpenOption.APPEND);
+            builder.setLength(0);
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -115,15 +159,15 @@ public class FileWriting {
         Files.createDirectories(Path.of(baseDir));
 
         System.out.println("=== Write String ===");
-        writeString(baseDir + "/write-test.txt", "Hello, File!");
-        System.out.println("Written. Content: " + Files.readString(Path.of(baseDir + "/write-test.txt")));
-        /*
+        writeString(baseDir + "/write-test.txt", "I dont know where's the file >:( ");
+        System.out.println("Readding file content... \n" + Files.readString(Path.of(baseDir + "/write-test.txt")));
+
         System.out.println("\n=== Append to File ===");
         appendToFile(baseDir + "/write-test.txt", "This was appended!");
         System.out.println("Appended. Content:\n" + Files.readString(Path.of(baseDir + "/write-test.txt")));
 
         System.out.println("\n=== Write Lines ===");
-        writeLines(baseDir + "/lines-test.txt", List.of("Apple", "Banana", "Cherry"));
+        writeLines(baseDir + "/lines-test.txt", List.of("Mox Ruby", "Mox Jet", "Mox Sapphire","Mox Pearl","Mox Emerald"));
         System.out.println("Lines written:");
         Files.readAllLines(Path.of(baseDir + "/lines-test.txt")).forEach(System.out::println);
 
@@ -146,10 +190,12 @@ public class FileWriting {
         writeCsv(baseDir + "/data.csv", headers, rows);
         System.out.println("CSV written:");
         System.out.println(Files.readString(Path.of(baseDir + "/data.csv")));
-        */
+        /*
         // Clean up
         Files.walk(Path.of(baseDir))
                 .sorted(java.util.Comparator.reverseOrder())
                 .forEach(p -> { try { Files.delete(p); } catch (IOException ignored) {} });
+
+         */
     }
 }

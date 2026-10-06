@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +30,8 @@ public class FileReading {
      */
     public static List<String> readAllLines(String filePath) throws IOException {
         // TODO: 1 - Use Files.readAllLines(Path.of(filePath)) to read all lines.
-        //  Return the resulting List<String>.
-        return null;
+        //  Return the resulting List<String>.+
+        return Files.readAllLines(Path.of(filePath));
     }
 
     /**
@@ -46,7 +47,17 @@ public class FileReading {
         //      read lines in a loop using reader.readLine() until it returns null.
         //      Print each line.
         //  }
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            do{
+                line = reader.readLine();
+                if(line != null)
+                    System.out.println(line);
 
+            }while(line != null );
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -60,7 +71,7 @@ public class FileReading {
         // TODO: 3 - Read the file line by line and count the lines.
         //  You can use Files.readAllLines() and call .size(),
         //  or use Files.lines() with .count() for a stream-based approach.
-        return 0;
+        return Files.readAllLines(Path.of(filePath)).size();
     }
 
     /**
@@ -76,7 +87,12 @@ public class FileReading {
         //  Filter the lines to only include those that contain the given word.
         //  Hint: use a for loop and an ArrayList to collect matching lines,
         //  or use Files.readAllLines().stream().filter(...).toList()
-        return null;
+        List<String> matchingList = new ArrayList<>();
+        for (String line: Files.readAllLines(Path.of(filePath))) {
+            if(line.contains(word))
+                matchingList.add(line);
+        }
+        return matchingList;
     }
 
     /**
@@ -89,7 +105,7 @@ public class FileReading {
     public static String readFileAsString(String filePath) throws IOException {
         // TODO: 5 - Use Files.readString(Path.of(filePath)) to read the entire file
         //  as a single String. Return it.
-        return null;
+        return Files.readString(Path.of(filePath));
     }
 
     /**
@@ -103,7 +119,13 @@ public class FileReading {
         //  Catch FileNotFoundException (or NoSuchFileException) and return
         //  "File not found: " + filePath.
         //  Catch IOException and return "Error reading file: " + e.getMessage().
-        return null;
+        try{
+            Files.readAllLines(Path.of(filePath));
+            return "File Found";
+        } catch (NoSuchFieldError | IOException e){
+            return "Error reading file: " + e.getMessage();
+        }
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -111,7 +133,7 @@ public class FileReading {
 
         // First, create a test file so the exercises can run
         Files.writeString(Path.of(testFile),
-                "Hello World\nJava is great\nPractice makes perfect\nHello again\nJava rocks!");
+                "Hello World\nBlood for the Blood God\nSkulls for the Skulls Throne\nJava rocks!");
 
         System.out.println("=== Read All Lines ===");
         List<String> lines = readAllLines(testFile);
@@ -124,7 +146,7 @@ public class FileReading {
         System.out.println("Number of lines: " + countLines(testFile));
 
         System.out.println("\n=== Search Word ===");
-        List<String> results = searchWord(testFile, "Java");
+        List<String> results = searchWord(testFile, "Skulls");
         if (results != null) results.forEach(l -> System.out.println("Found: " + l));
 
         System.out.println("\n=== Read as String ===");
@@ -133,8 +155,9 @@ public class FileReading {
 
         System.out.println("\n=== Handle Missing File ===");
         System.out.println(handleMissingFile("nonexistent.txt"));
-
+        /*
         // Clean up test file
         Files.deleteIfExists(Path.of(testFile));
+         */
     }
 }
