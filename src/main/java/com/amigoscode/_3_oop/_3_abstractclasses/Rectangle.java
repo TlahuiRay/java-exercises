@@ -36,7 +36,7 @@ public class Rectangle extends Shape{
     //   Formula:
     //   Use the @Override annotation.
     @Override
-    double area() {
+    public double area() {
         return width * height;
     }
 
@@ -45,7 +45,7 @@ public class Rectangle extends Shape{
     //   Formula: 2 * (width + height)
     //   Use the @Override annotation.
     @Override
-    double perimeter() {
+    public double perimeter() {
         return 2 * (width + height);
     }
 

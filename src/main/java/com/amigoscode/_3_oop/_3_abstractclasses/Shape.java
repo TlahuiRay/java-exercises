@@ -20,11 +20,11 @@ public abstract class Shape {
     // TODO: 2 - Declare an abstract method: double area()
     //   Abstract methods have no body — just the signature followed by ;
     //   Every subclass of Shape must implement this method.
-    abstract double area();
+    public abstract double area();
 
     // TODO: 3 - Declare an abstract method: double perimeter()
     //   Every subclass of Shape must implement this method.
-    abstract double perimeter();
+    public abstract double perimeter();
 
     // TODO: 4 - Create a concrete (non-abstract) method: void describe()
     //   This method should print:
@@ -40,6 +40,6 @@ public abstract class Shape {
     //   Use String.format("%.2f", value) to format to 2 decimal places.
     @Override
     public String toString() {
-        return String.format("Shape[area=%.2f, perimeter=%.2f]", area(), perimeter());
+        return getClass().getSimpleName()+"[area=<"+ String.format("%.2f",area())+">, perimeter=<" + String.format("%.2f",perimeter())+">]";
     }
 }

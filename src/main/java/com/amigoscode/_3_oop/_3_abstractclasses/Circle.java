@@ -34,7 +34,7 @@ public class Circle extends Shape{
     //   Formula: Math.PI * radius * radius
     //   Use the @Override annotation.
     @Override
-    double area() {
+    public double area() {
         return Math.PI * radius * radius;
     }
 
@@ -42,7 +42,7 @@ public class Circle extends Shape{
     //   Formula: 2 * Math.PI * radius
     //   Use the @Override annotation.
     @Override
-    double perimeter() {
+    public double perimeter() {
         return 2 * Math.PI * radius;
     }
 
