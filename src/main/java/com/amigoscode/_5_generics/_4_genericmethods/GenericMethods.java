@@ -18,11 +18,20 @@ public class GenericMethods {
     // TODO: 1 - Create a static generic method: <T> void printArray(T[] array)
     //  It should print each element of the array on the same line separated
     //  by spaces, then print a newline at the end.
+    <T> void printArray(T[] array){
+        for(T t : array){
+            System.out.print(t + " ");
+        }
+        System.out.println();
+    }
 
 
     // TODO: 2 - Create a static generic method: <T> T getFirst(List<T> list)
     //  It should return the first element of the list.
     //  If the list is empty, return null.
+    <T> T getFirst(List<T> list){
+        return list.isEmpty() ? null : list.getFirst();
+    }
 
 
     // TODO: 3 - Create a static generic method: <T> T getLast(List<T> list)

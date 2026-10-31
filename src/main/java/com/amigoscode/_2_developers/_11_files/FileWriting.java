@@ -60,7 +60,8 @@ public class FileWriting {
         if(Files.notExists(Path.of(filePath)))
             Files.createFile(Path.of(filePath));
         for (String line : lines) {
-            Files.writeString(Path.of(filePath),line+"\n",StandardOpenOption.APPEND );
+
+
         }
     }
 
