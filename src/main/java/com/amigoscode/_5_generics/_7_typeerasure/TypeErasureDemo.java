@@ -23,36 +23,47 @@ public class TypeErasureDemo {
         //  using == and print the result.
         //  Example: System.out.println(stringList.getClass() == intList.getClass());
         //  Are they the same class at runtime? Add a comment explaining why.
+        List<String> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        list1.add("Hello");
+        list1.add("World");
+        list1.add("!!!");
+
+        list2.add(9);
+        list2.add(99);
+        list2.add(999);
+
+        System.out.println(list1.getClass() == list2.getClass());
+        //Type erasure eliminates the generic during run time
 
 
         // TODO: 2 - Demonstrate that generic type info is lost at runtime.
         //  Print the getClass().getName() of both lists from TODO 1.
         //  Add a comment explaining what you see -- do the class names
         //  include <String> or <Integer>? Why not?
-
+        System.out.println(list1.getClass().getName());
+        System.out.println(list2.getClass().getName());
+        /*
+        java.util.ArrayList
+        java.util.ArrayList
+        Type erasure eliminates the generic during run time
+        */
 
         // TODO: 3 - Show that instanceof works with raw types but NOT with
         //  parameterized types. Uncomment the code below, observe the error,
         //  then comment it back out. Write the correct version using the raw type.
         //
-        // if (stringList instanceof ArrayList<String>) { }  // Does this compile?
+         if (list1 instanceof ArrayList<String>) {
+             System.out.println("parameterized");
+         }  // Does this compile?
         //
         //  Write the working version:
-        //  if (stringList instanceof ArrayList) { ... }
-        //  Add a comment explaining why you cannot use instanceof with generics.
-
-
-        // TODO: 4 - Show that you cannot create a generic array.
-        //  Uncomment the line below and observe the compile error.
-        //  Comment it back out and add an explanation.
-        //
-        // public static <T> T[] createArray(int size) {
-        //     return new T[size];  // Why doesn't this compile?
-        // }
-        //
-        //  Explain: Since T is erased at runtime, the JVM would not know
-        //  what type of array to create. What workaround exists?
-
+          if (list1 instanceof ArrayList) {
+              System.out.println("raw");
+          }
+        //Add a comment explaining why you cannot use instanceof with generics.
+        //Actually it worked for both
 
         // TODO: 5 - Add a comment below summarizing:
         //  (a) What is type erasure?
@@ -62,4 +73,14 @@ public class TypeErasureDemo {
         //  (d) Why did Java choose type erasure? (Hint: backward compatibility)
 
     }
+    // TODO: 4 - Show that you cannot create a generic array.
+    //  Uncomment the line below and observe the compile error.
+    //  Comment it back out and add an explanation.
+
+    //  Explain: Since T is erased at runtime, the JVM would not know
+    //  what type of array to create. What workaround exists?
+//    public static <T> T[] createArray(int size) {
+//        return new T[size];  // Why doesn't this compile?
+//    }
+    //At run time T will be eliminated and the array would not have a type.
 }
