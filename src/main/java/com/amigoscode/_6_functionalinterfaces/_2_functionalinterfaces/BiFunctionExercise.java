@@ -61,6 +61,7 @@ public class BiFunctionExercise {
         List<String> list = IntStream.range(0, firstNames.size())
                   .mapToObj(i -> describe.apply(firstNames.get(i), ages.get(i)))
                   .collect(Collectors.toList());
+
         System.out.println(list);
 
     }
